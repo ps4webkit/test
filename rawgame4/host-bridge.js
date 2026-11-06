@@ -1,0 +1,1 @@
+(function(){'use strict';if(window.parent===window)return;function send(stage,line){try{window.parent.postMessage({type:'mcfort-webkitty-bridge',stage:stage,line:String(line||'').slice(0,300)},location.origin);}catch(e){}}window.mcfortRawBridge=send;send('start','RawGame4 начал запуск.');})();

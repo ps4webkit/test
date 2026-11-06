@@ -1,0 +1,32 @@
+/host.appcache
+  Content-Type: text/cache-manifest; charset=utf-8
+  Cache-Control: no-cache, must-revalidate
+
+/rawgame4/cache.appcache
+  Content-Type: text/cache-manifest; charset=utf-8
+  Cache-Control: no-cache, must-revalidate
+
+/webkitty/includes/caches/manifest/*
+  Content-Type: text/cache-manifest; charset=utf-8
+  Cache-Control: no-cache, must-revalidate
+
+/engine/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/*.bin
+  Content-Type: application/octet-stream
+
+
+/engine/patches/*.bin
+  Content-Type: application/octet-stream
+
+/afterglow/*.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: no-cache, must-revalidate
+
+/afterglow/*.bin
+  Content-Type: application/octet-stream
+  Cache-Control: no-cache, must-revalidate
+
+/afterglow/*.html
+  Cache-Control: no-cache, must-revalidate
