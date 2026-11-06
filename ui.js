@@ -1,8 +1,9 @@
 (function () {
   'use strict';
   var $=function(id){return document.getElementById(id);};
-  var demo=/(?:\?|&)demo=1(?:&|$)/.test(location.search), cache=window.applicationCache;
-  var ua=navigator.userAgent.match(/PlayStation 4[ /]([\d.]+)/i), demoParams=new URLSearchParams(location.search), firmware=demo?(demoParams.get('fw')||'13.02'):(ua?ua[1]:null);
+  var ua=navigator.userAgent.match(/PlayStation 4[ /]([\d.]+)/i);
+  var demo=/(?:\?|&)demo=1(?:&|$)/.test(location.search)||/\/demo\.html$/.test(location.pathname)||!ua, cache=window.applicationCache;
+  var demoParams=new URLSearchParams(location.search), firmware=demo?(demoParams.get('fw')||'13.02'):(ua?ua[1]:null);
   var firmwareRoute=window.hostFirmware.route(firmware,demo?demoParams.get('module'):null),original=firmwareRoute==='original'||firmwareRoute==='afterglow';
   var lapse=firmwareRoute==='lapse',poops=firmwareRoute==='poops',legacy=firmwareRoute==='webkitty',integrated1100=legacy&&firmware==='11.00';
   var compatible=!!firmwareRoute, ready=false, started=false, finished=false, frame=null;
@@ -70,7 +71,7 @@
   }
   function demoControls(){
     var tools=$('demoTools'),choices=$('demoFirmware'),routes=window.hostFirmware.routes;
-    $('demoRow').hidden=false;tools.hidden=false;document.body.classList.add('demo-mode');for(var k in routes){if(!Object.prototype.hasOwnProperty.call(routes,k))continue;var versions=routes[k].split(' ');for(var n=0;n<versions.length;n++){if(versions[n]==='11.00'&&k==='lapse')continue;var opt=document.createElement('option');opt.value=versions[n];opt.textContent=versions[n];choices.appendChild(opt);}}
+    $('demoRow').hidden=false;tools.hidden=false;document.body.classList.add('demo-mode');choices.textContent='';for(var k in routes){if(!Object.prototype.hasOwnProperty.call(routes,k))continue;var versions=routes[k].split(' ');for(var n=0;n<versions.length;n++){if(versions[n]==='11.00'&&k==='lapse')continue;var opt=document.createElement('option');opt.value=versions[n];opt.textContent=versions[n];choices.appendChild(opt);}}
     var unsupported=document.createElement('option');unsupported.value='15.00';unsupported.textContent='15.00 · не поддерживается';choices.appendChild(unsupported);choices.value=firmware;
     $('demoModuleRow').hidden=firmware!=='11.00';$('demoModule').value=firmwareRoute==='lapse'?'lapse':'webkitty';$('demoOutcome').value=demoParams.get('result')==='failure'?'failure':'success';
     function go(){location.search='?demo=1&fw='+encodeURIComponent(choices.value)+'&module='+encodeURIComponent($('demoModule').value)+'&result='+encodeURIComponent($('demoOutcome').value);}
