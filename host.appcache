@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# MCFORT9669 v12.0 · unified interface · 2026-11-06
-# build 12.0-all-firmware-test
+# MCFORT9669 v12.1 · firmware demo · 2026-11-06
+# build 12.1-demo-firmware-selector
 
 CACHE:
 index.html
@@ -8,6 +8,7 @@ style.css
 refresh.css
 ui.js
 firmware-map.js
+DEMO-MAINTENANCE.md
 error-report.js
 panels.js
 goldhen.bin

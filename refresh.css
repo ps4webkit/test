@@ -497,3 +497,6 @@ body:not(.glass-off) .versions #goldhenNews{
 
 /* Keep the embedded WebKitty viewport at the PS4 browser size for CSSFontFace. */
 .engine-frame.unified-webkitty-frame{left:-200vw;top:0;width:100vw;height:100vh}
+
+/* Demo controls appear only with ?demo=1 and never arm the exploit. */
+.demo-tools{position:absolute;z-index:6;top:calc(100% + 4px);left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 12px;border:1px solid var(--host-line,#435675);border-radius:10px;background:var(--host-surface,#10141b);color:var(--host-text,#edf0f5);font:13px Arial,sans-serif;white-space:nowrap;box-shadow:0 6px 20px #0008}.demo-tools label{display:flex;align-items:center;gap:4px}.demo-tools strong{color:#ffd45c}.demo-tools select,.demo-tools button{font:inherit;color:inherit;background:var(--host-panel,#202a39);border:1px solid var(--host-line,#435675);border-radius:6px;padding:5px}.demo-tools button{cursor:pointer}.demo-tools[hidden]{display:none!important}@media(max-width:850px){.demo-tools{font-size:10px;gap:3px;padding:3px}.demo-tools select,.demo-tools button{padding:2px}}

@@ -60,15 +60,15 @@
   function info(){
     var match=navigator.userAgent.match(/PlayStation 4[ /]([\d.]+)/i),demo=/(?:\?|&)demo=1(?:&|$)/.test(location.search);
     $('infoFirmwareList').textContent=window.hostFirmware.fullList;
-    $('infoMode').textContent=demo?'Демо · запуск имитируется':match?'PS4 · прошивка '+match[1]:'Браузер компьютера / телефона';
+    $('infoMode').textContent=demo?'Демо · FW '+(new URLSearchParams(location.search).get('fw')||'13.02')+' · запуск имитируется':match?'PS4 · прошивка '+match[1]:'Браузер компьютера / телефона';
     var cache=window.applicationCache,names=['Пока не сохранён','Кэш доступен','Проверка обновления','Загрузка файлов','Готово обновление','Кэш удалён'];
     $('infoCache').textContent=demo?'В демо не проверяется':cache?(names[cache.status]||'Статус неизвестен'):'AppCache недоступен';
   }
   function open(view,button,title){window.hostJournal.close();close(false);returnFocus=$(button);$(button).setAttribute('aria-expanded','true');$('extrasTitle').textContent=title;var views=['guidesView','settingsView','newsView','infoView'];for(var i=0;i<views.length;i++)$(views[i]).hidden=views[i]!==view;if(view==='infoView')info();$('extras').hidden=false;$('extrasClose').focus();}
   for(var i=0;i<guideItems.length;i++)(function(item,index){var wrap=document.createElement('div'),b=document.createElement('button'),p=document.createElement('p');wrap.className='guide-item';b.className='guide-toggle';b.type='button';b.textContent=item[0];b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','guide'+index);p.id='guide'+index;p.className='guide-body';p.textContent=item[1];p.hidden=true;b.addEventListener('click',function(){var willOpen=p.hidden,buttons=$('guideList').querySelectorAll('button'),texts=$('guideList').querySelectorAll('p');for(var j=0;j<buttons.length;j++){buttons[j].setAttribute('aria-expanded','false');texts[j].hidden=true;}p.hidden=!willOpen;b.setAttribute('aria-expanded',willOpen?'true':'false');});wrap.appendChild(b);wrap.appendChild(p);$('guideList').appendChild(wrap);})(guideItems[i],i);
   function goldhenInfo(){
-    var m=navigator.userAgent.match(/PlayStation 4[ \/]([\d.]+)/i),fw=m?m[1]:null;
-    var data=window.hostFirmware.payload(fw),button=$('goldhenNews');
+    var m=navigator.userAgent.match(/PlayStation 4[ \/]([\d.]+)/i),params=new URLSearchParams(location.search),isDemo=params.get('demo')==='1',fw=isDemo?(params.get('fw')||'13.02'):(m?m[1]:null);
+    var data=window.hostFirmware.payload(fw,isDemo?params.get('module'):null,isDemo),button=$('goldhenNews');
     var label=data.route?data.name+(data.version?' '+data.version:''):'GoldHEN · FW AUTO';
     if(fw&&!data.route)label='GoldHEN · FW '+fw;
     button.textContent=label;button.setAttribute('aria-label','Информация о '+label+(fw?' для PS4 FW '+fw:''));
