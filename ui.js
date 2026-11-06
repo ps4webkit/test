@@ -17,7 +17,7 @@
   function finishStats(result){if(demo||counted||!runId)return;counted=true;if(reused){if(stats.pending&&stats.pending.id===runId)stats.pending=null;saveStats();return;}if(result==='success')stats.success=number(stats.success+1);else stats.failure=number(stats.failure+1);if(stats.pending&&stats.pending.id===runId)stats.pending=null;saveStats();}
   function journal(open){if(open)window.hostPanels.close(false);$('journal').hidden=!open;window.hostJournal.render(logs,received);$('journalToggle').setAttribute('aria-expanded',open?'true':'false');if(open)$('journalClose').focus();else $('journalToggle').focus();}
   function status(title,description){$('statusTitle').textContent=title;$('statusDescription').textContent=description;}
-  function signal(text){$('hostSignal').hidden=!text;document.body.classList.toggle('signal-ready',!!text);if(text)$('hostSignalText').textContent=text;}
+  function signal(text){if(demo){$('hostSignal').hidden=true;document.body.classList.remove('signal-ready');return;}$('hostSignal').hidden=!text;document.body.classList.toggle('signal-ready',!!text);if(text)$('hostSignalText').textContent=text;}
   function autoEnabled(){return !!(window.hostPreferences&&window.hostPreferences.autoStartEnabled());}
   function readyDisplay(){
     var automatic=!demo&&autoEnabled();status('Готово к запуску',automatic?(integrated1100?'Автовзлом 11.00 начнётся здесь после готовности файлов.':legacy?'WebKitty начнёт запуск на этом экране после загрузки файлов.':'Автовзлом начнётся автоматически.'):firmware==='14.00'?'Нажмите «ВЗЛОМ» для запуска Afterglow.':integrated1100?'Нажмите «ВЗЛОМ». WebKitty выполнит запуск на этом экране.':legacy?'Нажмите «ВЗЛОМ». WebKitty работает внутри общего экрана.':!original?'Нажмите «ВЗЛОМ» для запуска модуля FW '+firmware+'.':'Нажмите кнопку «ВЗЛОМ».');
@@ -70,7 +70,7 @@
   }
   function demoControls(){
     var tools=$('demoTools'),choices=$('demoFirmware'),routes=window.hostFirmware.routes;
-    tools.hidden=false;for(var k in routes){if(!Object.prototype.hasOwnProperty.call(routes,k))continue;var versions=routes[k].split(' ');for(var n=0;n<versions.length;n++){if(versions[n]==='11.00'&&k==='lapse')continue;var opt=document.createElement('option');opt.value=versions[n];opt.textContent=versions[n];choices.appendChild(opt);}}
+    $('demoRow').hidden=false;tools.hidden=false;document.body.classList.add('demo-mode');for(var k in routes){if(!Object.prototype.hasOwnProperty.call(routes,k))continue;var versions=routes[k].split(' ');for(var n=0;n<versions.length;n++){if(versions[n]==='11.00'&&k==='lapse')continue;var opt=document.createElement('option');opt.value=versions[n];opt.textContent=versions[n];choices.appendChild(opt);}}
     var unsupported=document.createElement('option');unsupported.value='15.00';unsupported.textContent='15.00 · не поддерживается';choices.appendChild(unsupported);choices.value=firmware;
     $('demoModuleRow').hidden=firmware!=='11.00';$('demoModule').value=firmwareRoute==='lapse'?'lapse':'webkitty';$('demoOutcome').value=demoParams.get('result')==='failure'?'failure':'success';
     function go(){location.search='?demo=1&fw='+encodeURIComponent(choices.value)+'&module='+encodeURIComponent($('demoModule').value)+'&result='+encodeURIComponent($('demoOutcome').value);}
@@ -83,7 +83,7 @@
     if(!ready){notice('Дождитесь полного сохранения кэша.','warn');return;}
     window.hostPanels.close(false);window.hostJournal.close();started=true;if(!demo&&window.hostErrorReport)window.hostErrorReport.start(integrated1100?'WebKitty':'MCFORT9669');beginAttempt();startTime=Date.now();$('launch').disabled=true;document.body.classList.add('running');signal('ЗАПУСК · '+(demo?'ДЕМО':'FW '+firmware));$('launch').textContent='Взлом\nв процессе…';$('buttonHint').textContent='Не нажимайте повторно';status('Выполняется ВЗЛОМ','Выполняется WebKit. Пожалуйста, подождите.');step(3,'active');log(demo?'[DEMO] Только анимация и тестовые статусы.':'[HOST] Запуск цепочки для PS4 '+firmware+'.');timer=setInterval(updateClock,1000);
     warningTimer=setTimeout(function(){if(!finished)notice('Запуск длится дольше обычного. Не запускайте вторую копию.','warn');},120000);
-    if(demo){startDemo();return;}
+    if(demo){status('Демонстрация запуска','FW '+firmware+' · '+(legacy?'WebKitty':lapse?'RawGame4 Lapse':poops?'RawGame4 Poops':firmwareRoute==='afterglow'?'Afterglow':'MCFORT9669')+' · взлом не выполняется');startDemo();return;}
     if(legacy){
       try{
         if(integrated1100){localStorage.setItem('exploitChain','4');localStorage.setItem('bareboneJB','false');}
